@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 
+const baseURL = import.meta.env.VITE_API_URL || process.env.REACT_APP_API_URL;
+
 export default function EditTask({ id, back }) {
   const [taskName, setTaskName] = useState("");
   const [taskCompleted, setTaskCompleted] = useState(false);
@@ -9,7 +11,7 @@ export default function EditTask({ id, back }) {
 
   const loadTask = async () => {
     try {
-      const res = await axios.get(`/api/v1/tasks/${id}`);
+      const res = await axios.get(`${baseURL}/tasks/${id}`);
       const task = res.data.task;
 
       setTaskName(task.name);
@@ -28,7 +30,7 @@ export default function EditTask({ id, back }) {
     e.preventDefault();
 
     try {
-      await axios.patch(`/api/v1/tasks/${id}`, {
+      await axios.patch(`${baseURL}/tasks/${id}`, {
         name: taskName,
         completed: taskCompleted,
       });

@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import TaskItem from "./TaskItem";
 
+const baseURL = import.meta.env.VITE_API_URL || process.env.REACT_APP_API_URL;
+
 export default function TaskList({ onEdit }) {
   const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -11,7 +13,7 @@ export default function TaskList({ onEdit }) {
   const loadTasks = async () => {
     setLoading(true);
     try {
-      const res = await axios.get("/api/v1/tasks");
+      const res = await axios.get(`${baseURL}/tasks`);
       setTasks(res.data.tasks);
     } catch (error) {
       console.log(error);
@@ -26,7 +28,7 @@ export default function TaskList({ onEdit }) {
   const createTask = async (e) => {
     e.preventDefault();
     try {
-      await axios.post("/api/v1/tasks", { name: taskName });
+      await axios.post(`${baseURL}/tasks`, { name: taskName });
       setTaskName("");
       setAlert("success, task added");
       loadTasks();
@@ -59,7 +61,10 @@ export default function TaskList({ onEdit }) {
       </form>
 
       <section className="tasks-container">
-        <p className="loading-text" style={{ visibility: loading ? "visible" : "hidden" }}>
+        <p
+          className="loading-text"
+          style={{ visibility: loading ? "visible" : "hidden" }}
+        >
           Loading...
         </p>
 
