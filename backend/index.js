@@ -6,7 +6,7 @@ require('dotenv').config();
 const cors = require('cors');
 app.use(express.json());
 app.use(cors({
-  origin: ['https://your-frontend.onrender.com']
+  origin: ['https://task-manager-system-1-t3du.onrender.com']
 }));
 app.get('/', (req, res) => {
   res.send("Task manager initialized");
