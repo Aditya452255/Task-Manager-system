@@ -9,7 +9,7 @@ const baseURL =
 export default function TaskItem({ task, refresh, onEdit, onDelete }) {
   const { _id, name, completed } = task;
 
-  // When checkbox is clicked → update completed status
+  // Only update completed when checkbox clicked
   const toggleCompleted = async () => {
     try {
       await axios.patch(`${baseURL}/tasks/${_id}`, {
@@ -23,20 +23,20 @@ export default function TaskItem({ task, refresh, onEdit, onDelete }) {
 
   return (
     <div className="single-task d-flex justify-content-between align-items-center p-3">
-      {/* LEFT SIDE */}
+      {/* LEFT SIDE → Task Name */}
       <div className="d-flex align-items-center gap-3">
         <span>
           <i className="far fa-check-circle"></i>
         </span>
-        <span>{name}</span>
+        <span style={{ fontSize: "18px" }}>{name}</span>
       </div>
 
-      {/* RIGHT SIDE */}
-      <div className="d-flex align-items-center gap-3">
+      {/* RIGHT SIDE → Completed + Edit + Delete */}
+      <div className="d-flex align-items-center gap-4">
 
-        {/* Completed Label + Checkbox */}
+        {/* Completed */}
         <div className="d-flex align-items-center gap-2">
-          <span style={{ fontSize: "14px", color: "#444" }}>Completed</span>
+          <span style={{ fontSize: "15px" }}>Completed</span>
           <input
             type="checkbox"
             checked={completed}
@@ -45,12 +45,12 @@ export default function TaskItem({ task, refresh, onEdit, onDelete }) {
           />
         </div>
 
-        {/* Edit Button */}
+        {/* Edit */}
         <button className="edit-link" onClick={() => onEdit(_id)}>
           <i className="fas fa-edit"></i>
         </button>
 
-        {/* Delete Button */}
+        {/* Delete */}
         <button className="delete-btn" onClick={() => onDelete(_id, name)}>
           <i className="fas fa-trash"></i>
         </button>
