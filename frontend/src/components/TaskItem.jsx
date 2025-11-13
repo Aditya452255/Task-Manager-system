@@ -22,39 +22,37 @@ export default function TaskItem({ task, refresh, onEdit, onDelete }) {
   };
 
   return (
-    <div className={`single-task ${completed ? "task-completed" : ""}`}>
-      <h5>
-        <span>
-          <i className="far fa-check-circle"></i>
-        </span>
-        {name}
-      </h5>
+  <div className={`single-task ${completed ? "task-completed" : ""}`}>
+    <h5>
+      <span>
+        <i className="far fa-check-circle"></i>
+      </span>
+      {name}
+    </h5>
 
-      {/* RIGHT SIDE BUTTON + COMPLETED CHECKBOX */}
-      <div className="task-links" style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-        
-        {/* Completed checkbox */}
-        <label style={{ display: "flex", alignItems: "center", gap: "5px", fontSize: "0.9rem" }}>
-          <span style={{ color: "#444" }}>Completed</span>
-          <input
-            type="checkbox"
-            checked={completed}
-            onChange={toggleCompleted}
-            style={{ width: "18px", height: "18px", cursor: "pointer" }}
-          />
-        </label>
+    {/* RIGHT SIDE ICONS + CHECKBOX */}
+    <div className="task-actions">
 
-        {/* Edit button */}
-        <button className="edit-link" onClick={() => onEdit(_id)}>
-          <i className="fas fa-edit"></i>
-        </button>
+      {/* Completed Label + Checkbox */}
+      <label className="completed-label">
+        Completed
+        <input
+          type="checkbox"
+          checked={completed}
+          onChange={() => refresh()} // optional refresh (or handle toggle)
+        />
+      </label>
 
-        {/* Delete button */}
-        <button className="delete-btn" onClick={() => onDelete(_id, name)}>
-          <i className="fas fa-trash"></i>
-        </button>
+      {/* Edit Button */}
+      <button className="edit-link" onClick={() => onEdit(_id)}>
+        <i className="fas fa-edit"></i>
+      </button>
 
-      </div>
+      {/* Delete Button */}
+      <button className="delete-btn" onClick={() => onDelete(_id, name)}>
+        <i className="fas fa-trash"></i>
+      </button>
     </div>
-  );
+  </div>
+);
 }
