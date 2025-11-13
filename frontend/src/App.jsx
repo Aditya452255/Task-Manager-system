@@ -2,7 +2,10 @@ import React, { useState } from "react";
 import TaskList from "./components/TaskList";
 import axios from "axios";
 
-const baseURL = process.env.REACT_APP_API_URL;
+const baseURL =
+  import.meta.env?.VITE_API_URL ||
+  process.env.REACT_APP_API_URL ||
+  "https://task-manager-system-h48a.onrender.com/api/v1";
 
 export default function App() {
   const [editId, setEditId] = useState(null);
@@ -54,6 +57,7 @@ export default function App() {
   return (
     <>
       <TaskList onEdit={openEditModal} onDelete={openDeleteModal} />
+
       <div className="modal fade" id="editModal" tabIndex="-1">
         <div className="modal-dialog">
           <div className="modal-content">
@@ -118,6 +122,7 @@ export default function App() {
                 Delete
               </button>
             </div>
+
           </div>
         </div>
       </div>
