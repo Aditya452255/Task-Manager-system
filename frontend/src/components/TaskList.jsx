@@ -2,10 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import TaskItem from "./TaskItem";
 
-const baseURL =
-  import.meta.env?.VITE_API_URL ||
-  process.env.REACT_APP_API_URL ||
-  "https://task-manager-system-h48a.onrender.com/api/v1";
+const baseURL = process.env.REACT_APP_API_URL;
 
 export default function TaskList({ onEdit, onDelete }) {
   const [tasks, setTasks] = useState([]);
