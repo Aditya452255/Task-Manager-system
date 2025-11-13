@@ -9,6 +9,7 @@ const baseURL =
 export default function TaskItem({ task, refresh, onEdit, onDelete }) {
   const { _id, name, completed } = task;
 
+  // update completed instantly
   const toggleCompleted = async () => {
     try {
       await axios.patch(`${baseURL}/tasks/${_id}`, {
@@ -29,22 +30,26 @@ export default function TaskItem({ task, refresh, onEdit, onDelete }) {
         {name}
       </h5>
 
-      <div className="task-links" style={{ display: "flex", gap: "10px", alignItems: "center" }}>
+      {/* RIGHT SIDE BUTTON + COMPLETED CHECKBOX */}
+      <div className="task-links" style={{ display: "flex", alignItems: "center", gap: "10px" }}>
         
-        {/* Completed Checkbox */}
-        <input
-          type="checkbox"
-          checked={completed}
-          onChange={toggleCompleted}
-          style={{ width: "18px", height: "18px", cursor: "pointer" }}
-        />
+        {/* Completed checkbox */}
+        <label style={{ display: "flex", alignItems: "center", gap: "5px", fontSize: "0.9rem" }}>
+          <span style={{ color: "#444" }}>Completed</span>
+          <input
+            type="checkbox"
+            checked={completed}
+            onChange={toggleCompleted}
+            style={{ width: "18px", height: "18px", cursor: "pointer" }}
+          />
+        </label>
 
-        {/* Edit */}
+        {/* Edit button */}
         <button className="edit-link" onClick={() => onEdit(_id)}>
           <i className="fas fa-edit"></i>
         </button>
 
-        {/* Delete */}
+        {/* Delete button */}
         <button className="delete-btn" onClick={() => onDelete(_id, name)}>
           <i className="fas fa-trash"></i>
         </button>
