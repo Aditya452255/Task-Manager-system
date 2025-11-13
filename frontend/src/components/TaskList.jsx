@@ -76,7 +76,7 @@ export default function TaskList({ onEdit }) {
           )}
 
           {tasks.map((task) => (
-            <TaskItem key={task._id} task={task} refresh={loadTasks} onEdit={onEdit} />
+            <TaskItem key={task._id} task={task} refresh={loadTasks} onEdit={onEdit} onDelete={onDelete} />
           ))}
         </div>
       </section>
