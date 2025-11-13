@@ -6,6 +6,7 @@ const baseURL =
 
 export default function TaskItem({ task, refresh, onEdit }) {
   const { _id, name, completed } = task;
+
   const [showModal, setShowModal] = useState(false);
 
   const confirmDelete = async () => {
@@ -20,7 +21,6 @@ export default function TaskItem({ task, refresh, onEdit }) {
 
   return (
     <>
-      {/* task card */}
       <div className={`single-task ${completed ? "task-completed" : ""}`}>
         <h5>
           <span>
@@ -34,7 +34,7 @@ export default function TaskItem({ task, refresh, onEdit }) {
             <i className="fas fa-edit"></i>
           </button>
 
-          {/* open modal */}
+        
           <button className="delete-btn" onClick={() => setShowModal(true)}>
             <i className="fas fa-trash"></i>
           </button>
@@ -45,7 +45,8 @@ export default function TaskItem({ task, refresh, onEdit }) {
       {showModal && (
         <div
           className="modal fade show"
-          style={{ display: "block", background: "rgba(0,0,0,0.5)" }}
+          style={{ display: "block" }}
+          tabIndex="-1"
         >
           <div className="modal-dialog">
             <div className="modal-content">
@@ -60,8 +61,8 @@ export default function TaskItem({ task, refresh, onEdit }) {
               </div>
 
               <div className="modal-body">
-                <p>Are you sure you want to delete this task?</p>
-                <p><strong>{name}</strong></p>
+                <p>Are you sure you want to delete the following task?</p>
+                <strong>{name}</strong>
               </div>
 
               <div className="modal-footer">
@@ -85,6 +86,12 @@ export default function TaskItem({ task, refresh, onEdit }) {
             </div>
           </div>
         </div>
+      )}
+      {showModal && (
+        <div
+          className="modal-backdrop fade show"
+          onClick={() => setShowModal(false)}
+        ></div>
       )}
     </>
   );
