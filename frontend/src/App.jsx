@@ -11,7 +11,7 @@ const baseURL =
 export default function App() {
   const [editId, setEditId] = useState(null);
 
-  // delete modal states
+  // DELETE MODAL STATES
   const [deleteId, setDeleteId] = useState(null);
   const [deleteName, setDeleteName] = useState("");
 
@@ -28,13 +28,6 @@ export default function App() {
   const confirmDelete = async () => {
     if (!deleteId) return;
     await axios.delete(`${baseURL}/tasks/${deleteId}`);
-
-    // close modal
-    const modal = window.bootstrap.Modal.getInstance(
-      document.getElementById("deleteModal")
-    );
-    modal.hide();
-
     window.location.reload();
   };
 
@@ -46,11 +39,16 @@ export default function App() {
         <TaskList onEdit={setEditId} onDelete={openDeleteModal} />
       )}
 
-      {/* DELETE MODAL */}
-      <div className="modal fade" id="deleteModal" tabIndex="-1">
+      {/* GLOBAL BOOTSTRAP DELETE MODAL */}
+      <div
+        className="modal fade"
+        id="deleteModal"
+        tabIndex="-1"
+        aria-hidden="true"
+      >
         <div className="modal-dialog">
           <div className="modal-content">
-
+            
             <div className="modal-header">
               <h5 className="modal-title">Delete Task</h5>
               <button className="btn-close" data-bs-dismiss="modal"></button>
@@ -66,7 +64,6 @@ export default function App() {
               <button className="btn btn-secondary" data-bs-dismiss="modal">
                 Cancel
               </button>
-
               <button className="btn btn-danger" onClick={confirmDelete}>
                 Delete
               </button>

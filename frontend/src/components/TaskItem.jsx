@@ -1,14 +1,10 @@
-import React from "react";
-
 export default function TaskItem({ task, refresh, onEdit, onDelete }) {
   const { _id, name, completed } = task;
 
   return (
     <div className={`single-task ${completed ? "task-completed" : ""}`}>
       <h5>
-        <span>
-          <i className="far fa-check-circle"></i>
-        </span>
+        <span><i className="far fa-check-circle"></i></span>
         {name}
       </h5>
 
