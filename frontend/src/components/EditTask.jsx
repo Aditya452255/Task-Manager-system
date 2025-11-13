@@ -3,20 +3,18 @@ import axios from "axios";
 
 const baseURL = process.env.REACT_APP_API_URL;
 
-
 export default function EditTask({ id, back }) {
   const [taskName, setTaskName] = useState("");
   const [taskCompleted, setTaskCompleted] = useState(false);
-  const [tempName, setTempName] = useState("");
   const [alert, setAlert] = useState("");
 
+  // Load task details
   const loadTask = async () => {
     try {
       const res = await axios.get(`${baseURL}/tasks/${id}`);
       const task = res.data.task;
 
       setTaskName(task.name);
-      setTempName(task.name);
       setTaskCompleted(task.completed);
     } catch (err) {
       console.log(err);
@@ -27,6 +25,7 @@ export default function EditTask({ id, back }) {
     loadTask();
   }, []);
 
+  // Update task
   const updateTask = async (e) => {
     e.preventDefault();
 
@@ -35,10 +34,10 @@ export default function EditTask({ id, back }) {
         name: taskName,
         completed: taskCompleted,
       });
-      setAlert("success, edited task");
+
+      setAlert("Task updated successfully!");
     } catch (err) {
-      setTaskName(tempName);
-      setAlert("error, please try again");
+      setAlert("Something went wrong, try again.");
     }
 
     setTimeout(() => setAlert(""), 3000);
@@ -49,6 +48,7 @@ export default function EditTask({ id, back }) {
       <form className="single-task-form" onSubmit={updateTask}>
         <h4>Edit Task</h4>
 
+        {/* Task Name */}
         <div className="form-control">
           <label>Name</label>
           <input
@@ -59,6 +59,7 @@ export default function EditTask({ id, back }) {
           />
         </div>
 
+        {/* Checkbox */}
         <div className="form-control">
           <label>Completed</label>
           <input
@@ -70,14 +71,14 @@ export default function EditTask({ id, back }) {
         </div>
 
         <button type="submit" className="block btn task-edit-btn">
-          Edit
+          Save Changes
         </button>
 
         {alert && <div className="form-alert text-success">{alert}</div>}
       </form>
 
       <button className="btn back-link" onClick={back}>
-        back to tasks
+        Back to tasks
       </button>
     </div>
   );

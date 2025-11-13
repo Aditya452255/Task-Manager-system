@@ -3,7 +3,6 @@ import axios from "axios";
 
 const baseURL = process.env.REACT_APP_API_URL;
 
-
 export default function TaskItem({ task, refresh, onEdit, onDelete }) {
   const { _id, name, completed } = task;
 
@@ -27,9 +26,11 @@ export default function TaskItem({ task, refresh, onEdit, onDelete }) {
         {name}
       </h5>
 
-      <div className="task-links" style={{ display: "flex", gap: "10px", alignItems: "center" }}>
-        
-        {/* Completed Checkbox */}
+      <div
+        className="task-links"
+        style={{ display: "flex", gap: "10px", alignItems: "center" }}
+      >
+        {/* Completed checkbox */}
         <input
           type="checkbox"
           checked={completed}
@@ -46,7 +47,6 @@ export default function TaskItem({ task, refresh, onEdit, onDelete }) {
         <button className="delete-btn" onClick={() => onDelete(_id, name)}>
           <i className="fas fa-trash"></i>
         </button>
-
       </div>
     </div>
   );
