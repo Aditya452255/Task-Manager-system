@@ -29,16 +29,19 @@ export default function TaskItem({ task, refresh, onEdit, onDelete }) {
 
       <div className="task-links" style={{ display: "flex", gap: "10px", alignItems: "center" }}>
         
+        {/* Completed checkbox */}
         <input
           type="checkbox"
           checked={completed}
           onChange={toggleCompleted}
         />
 
+        {/* EDIT MODAL */}
         <button className="edit-link" onClick={() => onEdit(_id, name, completed)}>
           <i className="fas fa-edit"></i>
         </button>
-        
+
+        {/* DELETE MODAL */}
         <button className="delete-btn" onClick={() => onDelete(_id, name)}>
           <i className="fas fa-trash"></i>
         </button>

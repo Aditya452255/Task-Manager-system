@@ -15,6 +15,7 @@ export default function App() {
   const [deleteId, setDeleteId] = useState(null);
   const [deleteName, setDeleteName] = useState("");
 
+  //  OPEN EDIT MODAL
   const openEditModal = (id, name, completed) => {
     setEditId(id);
     setEditName(name);
@@ -26,6 +27,7 @@ export default function App() {
     modal.show();
   };
 
+  // SAVE EDIT
   const saveEdit = async () => {
     try {
       await axios.patch(`${baseURL}/tasks/${editId}`, {
@@ -39,6 +41,7 @@ export default function App() {
     }
   };
 
+  // OPEN DELETE MODAL
   const openDeleteModal = (id, name) => {
     setDeleteId(id);
     setDeleteName(name);
@@ -58,6 +61,7 @@ export default function App() {
     <>
       <TaskList onEdit={openEditModal} onDelete={openDeleteModal} />
 
+      {/*  EDIT MODAL */}
       <div className="modal fade" id="editModal" tabIndex="-1">
         <div className="modal-dialog">
           <div className="modal-content">
@@ -99,6 +103,7 @@ export default function App() {
         </div>
       </div>
 
+      {/*  DELETE MODAL */}
       <div className="modal fade" id="deleteModal" tabIndex="-1">
         <div className="modal-dialog">
           <div className="modal-content">
