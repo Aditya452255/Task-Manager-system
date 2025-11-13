@@ -2,7 +2,10 @@ import React, { useState } from "react";
 import TaskList from "./components/TaskList";
 import axios from "axios";
 
-const baseURL = process.env.REACT_APP_API_URL;
+const baseURL =
+  import.meta.env?.VITE_API_URL ||
+  process.env.REACT_APP_API_URL ||
+  "https://task-manager-system-h48a.onrender.com/api/v1";
 
 export default function App() {
   const [editId, setEditId] = useState(null);
