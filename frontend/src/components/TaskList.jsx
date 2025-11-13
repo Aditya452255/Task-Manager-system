@@ -35,7 +35,7 @@ export default function TaskList({ onEdit }) {
       setAlert("success, task added");
       loadTasks();
     } catch {
-      setAlert("error, please try again");
+      setAlert("You have not written anything to add");
     }
 
     setTimeout(() => setAlert(""), 3000);
