@@ -23,32 +23,28 @@ export default function TaskItem({ task, refresh, onEdit, onDelete }) {
   return (
     <div className={`single-task ${completed ? "task-completed" : ""}`}>
       <h5>
-        <span>
-          <i className="far fa-check-circle"></i>
-        </span>
+        <span><i className="far fa-check-circle"></i></span>
         {name}
       </h5>
 
       <div className="task-links" style={{ display: "flex", gap: "10px", alignItems: "center" }}>
         
-        {/* Completed Checkbox */}
+        {/* Completed checkbox */}
         <input
           type="checkbox"
           checked={completed}
           onChange={toggleCompleted}
-          style={{ width: "18px", height: "18px", cursor: "pointer" }}
         />
 
-        {/* Edit */}
-        <button className="edit-link" onClick={() => onEdit(_id)}>
+        {/* EDIT MODAL */}
+        <button className="edit-link" onClick={() => onEdit(_id, name, completed)}>
           <i className="fas fa-edit"></i>
         </button>
 
-        {/* Delete */}
+        {/* DELETE MODAL */}
         <button className="delete-btn" onClick={() => onDelete(_id, name)}>
           <i className="fas fa-trash"></i>
         </button>
-
       </div>
     </div>
   );

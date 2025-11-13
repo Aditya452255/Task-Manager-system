@@ -1,7 +1,5 @@
-// src/App.jsx
 import React, { useState } from "react";
 import TaskList from "./components/TaskList";
-import EditTask from "./components/EditTask";
 import axios from "axios";
 
 const baseURL =
@@ -11,60 +9,108 @@ const baseURL =
 
 export default function App() {
   const [editId, setEditId] = useState(null);
+  const [editName, setEditName] = useState("");
+  const [editCompleted, setEditCompleted] = useState(false);
 
-  // delete modal state
   const [deleteId, setDeleteId] = useState(null);
   const [deleteName, setDeleteName] = useState("");
 
-  // called by TaskItem to open modal
+  // 🔵 OPEN EDIT MODAL
+  const openEditModal = (id, name, completed) => {
+    setEditId(id);
+    setEditName(name);
+    setEditCompleted(completed);
+
+    const modal = new window.bootstrap.Modal(
+      document.getElementById("editModal")
+    );
+    modal.show();
+  };
+
+  // SAVE EDIT
+  const saveEdit = async () => {
+    try {
+      await axios.patch(`${baseURL}/tasks/${editId}`, {
+        name: editName,
+        completed: editCompleted,
+      });
+
+      window.location.reload();
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  // OPEN DELETE MODAL
   const openDeleteModal = (id, name) => {
     setDeleteId(id);
     setDeleteName(name);
 
-    // use Bootstrap's Modal API to show the modal
-    const modalEl = document.getElementById("deleteModal");
-    const modalInstance = new window.bootstrap.Modal(modalEl);
-    modalInstance.show();
+    const modal = new window.bootstrap.Modal(
+      document.getElementById("deleteModal")
+    );
+    modal.show();
   };
 
   const confirmDelete = async () => {
-    if (!deleteId) return;
-    try {
-      await axios.delete(`${baseURL}/tasks/${deleteId}`);
-      // hide modal
-      const modalEl = document.getElementById("deleteModal");
-      const modalInstance = window.bootstrap.Modal.getInstance(modalEl);
-      if (modalInstance) modalInstance.hide();
-
-      // refresh page data in simplest way: reload (or you can pass a callback)
-      window.location.reload();
-    } catch (err) {
-      console.error("Delete failed:", err);
-    }
+    await axios.delete(`${baseURL}/tasks/${deleteId}`);
+    window.location.reload();
   };
 
   return (
     <>
-      {editId ? (
-        <EditTask id={editId} back={() => setEditId(null)} />
-      ) : (
-        <TaskList onEdit={(id) => setEditId(id)} onDelete={openDeleteModal} />
-      )}
+      <TaskList onEdit={openEditModal} onDelete={openDeleteModal} />
 
-      {/* ---------- Bootstrap modal placed once (global) ---------- */}
-      <div
-        className="modal fade"
-        id="deleteModal"
-        tabIndex="-1"
-        aria-labelledby="deleteModalLabel"
-        aria-hidden="true"
-      >
+      {/* 🔵 EDIT MODAL */}
+      <div className="modal fade" id="editModal" tabIndex="-1">
         <div className="modal-dialog">
           <div className="modal-content">
 
             <div className="modal-header">
-              <h5 className="modal-title" id="deleteModalLabel">Delete Task</h5>
-              <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              <h5 className="modal-title">Edit Task</h5>
+              <button className="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+
+            <div className="modal-body">
+              <label>Name</label>
+              <input
+                type="text"
+                className="form-control mb-3"
+                value={editName}
+                onChange={(e) => setEditName(e.target.value)}
+              />
+
+              <label className="d-flex align-items-center gap-2">
+                <span>Completed</span>
+                <input
+                  type="checkbox"
+                  checked={editCompleted}
+                  onChange={(e) => setEditCompleted(e.target.checked)}
+                />
+              </label>
+            </div>
+
+            <div className="modal-footer">
+              <button className="btn btn-secondary" data-bs-dismiss="modal">
+                Cancel
+              </button>
+              <button className="btn btn-primary" onClick={saveEdit}>
+                Save Changes
+              </button>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      {/* 🔴 DELETE MODAL */}
+      <div className="modal fade" id="deleteModal" tabIndex="-1">
+        <div className="modal-dialog">
+          <div className="modal-content">
+
+            <div className="modal-header">
+              <h5 className="modal-title">Delete Task</h5>
+              <button className="btn-close" data-bs-dismiss="modal"></button>
             </div>
 
             <div className="modal-body">
@@ -74,10 +120,10 @@ export default function App() {
             </div>
 
             <div className="modal-footer">
-              <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">
+              <button className="btn btn-secondary" data-bs-dismiss="modal">
                 Cancel
               </button>
-              <button type="button" className="btn btn-danger" onClick={confirmDelete}>
+              <button className="btn btn-danger" onClick={confirmDelete}>
                 Delete
               </button>
             </div>
