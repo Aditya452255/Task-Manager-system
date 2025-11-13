@@ -9,7 +9,7 @@ const baseURL =
 export default function TaskItem({ task, refresh, onEdit, onDelete }) {
   const { _id, name, completed } = task;
 
-  // update completed instantly
+  // When checkbox is clicked → update completed status
   const toggleCompleted = async () => {
     try {
       await axios.patch(`${baseURL}/tasks/${_id}`, {
@@ -22,37 +22,39 @@ export default function TaskItem({ task, refresh, onEdit, onDelete }) {
   };
 
   return (
-  <div className={`single-task ${completed ? "task-completed" : ""}`}>
-    <h5>
-      <span>
-        <i className="far fa-check-circle"></i>
-      </span>
-      {name}
-    </h5>
+    <div className="single-task d-flex justify-content-between align-items-center p-3">
+      {/* LEFT SIDE */}
+      <div className="d-flex align-items-center gap-3">
+        <span>
+          <i className="far fa-check-circle"></i>
+        </span>
+        <span>{name}</span>
+      </div>
 
-    {/* RIGHT SIDE ICONS + CHECKBOX */}
-    <div className="task-actions">
+      {/* RIGHT SIDE */}
+      <div className="d-flex align-items-center gap-3">
 
-      {/* Completed Label + Checkbox */}
-      <label className="completed-label">
-        Completed
-        <input
-          type="checkbox"
-          checked={completed}
-          onChange={() => refresh()} // optional refresh (or handle toggle)
-        />
-      </label>
+        {/* Completed Label + Checkbox */}
+        <div className="d-flex align-items-center gap-2">
+          <span style={{ fontSize: "14px", color: "#444" }}>Completed</span>
+          <input
+            type="checkbox"
+            checked={completed}
+            onChange={toggleCompleted}
+            style={{ width: "18px", height: "18px", cursor: "pointer" }}
+          />
+        </div>
 
-      {/* Edit Button */}
-      <button className="edit-link" onClick={() => onEdit(_id)}>
-        <i className="fas fa-edit"></i>
-      </button>
+        {/* Edit Button */}
+        <button className="edit-link" onClick={() => onEdit(_id)}>
+          <i className="fas fa-edit"></i>
+        </button>
 
-      {/* Delete Button */}
-      <button className="delete-btn" onClick={() => onDelete(_id, name)}>
-        <i className="fas fa-trash"></i>
-      </button>
+        {/* Delete Button */}
+        <button className="delete-btn" onClick={() => onDelete(_id, name)}>
+          <i className="fas fa-trash"></i>
+        </button>
+      </div>
     </div>
-  </div>
-);
+  );
 }
