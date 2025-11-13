@@ -4,22 +4,18 @@ import TaskItem from "./TaskItem";
 
 const baseURL = process.env.REACT_APP_API_URL;
 
-
 export default function TaskList({ onEdit, onDelete }) {
   const [tasks, setTasks] = useState([]);
-  const [loading, setLoading] = useState(false);
   const [taskName, setTaskName] = useState("");
   const [alert, setAlert] = useState("");
 
   const loadTasks = async () => {
-    setLoading(true);
     try {
       const res = await axios.get(`${baseURL}/tasks`);
       setTasks(res.data.tasks);
-    } catch (error) {
-      console.log(error);
+    } catch (err) {
+      console.log(err);
     }
-    setLoading(false);
   };
 
   useEffect(() => {
@@ -29,20 +25,13 @@ export default function TaskList({ onEdit, onDelete }) {
   const createTask = async (e) => {
     e.preventDefault();
     if (!taskName.trim()) {
-      setAlert("Please write something first");
+      setAlert("Write something first");
       return;
     }
 
-    try {
-      await axios.post(`${baseURL}/tasks`, { name: taskName });
-      setTaskName("");
-      setAlert("Task added!");
-      loadTasks();
-    } catch {
-      setAlert("Error adding task");
-    }
-
-    setTimeout(() => setAlert(""), 3000);
+    await axios.post(`${baseURL}/tasks`, { name: taskName });
+    setTaskName("");
+    loadTasks();
   };
 
   return (
@@ -63,19 +52,11 @@ export default function TaskList({ onEdit, onDelete }) {
           </button>
         </div>
 
-        {alert && <div className="form-alert text-success">{alert}</div>}
+        {alert && <div className="form-alert text-danger">{alert}</div>}
       </form>
 
       <section className="tasks-container">
-        <p className="loading-text" style={{ visibility: loading ? "visible" : "hidden" }}>
-          Loading...
-        </p>
-
         <div className="tasks">
-          {tasks.length === 0 && !loading && (
-            <h5 className="empty-list">No tasks in your list</h5>
-          )}
-
           {tasks.map((task) => (
             <TaskItem
               key={task._id}

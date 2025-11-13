@@ -2,19 +2,26 @@ import React, { useState } from "react";
 import TaskList from "./components/TaskList";
 import axios from "axios";
 
-const baseURL = process.env.REACT_APP_API_URL;
+const baseURL =
+  import.meta.env?.VITE_API_URL ||
+  process.env.REACT_APP_API_URL ||
+  "https://task-manager-system-h48a.onrender.com/api/v1";
 
 export default function App() {
+  // EDIT MODAL STATE
   const [editId, setEditId] = useState(null);
   const [editName, setEditName] = useState("");
+  const [editCompleted, setEditCompleted] = useState(false);
 
+  // DELETE MODAL STATE
   const [deleteId, setDeleteId] = useState(null);
   const [deleteName, setDeleteName] = useState("");
 
-  //  OPEN EDIT MODAL
-  const openEditModal = (id, name) => {
+  // 🔵 OPEN EDIT MODAL
+  const openEditModal = (id, name, completed) => {
     setEditId(id);
     setEditName(name);
+    setEditCompleted(completed);
 
     const modal = new window.bootstrap.Modal(
       document.getElementById("editModal")
@@ -22,13 +29,14 @@ export default function App() {
     modal.show();
   };
 
-  //  SAVE EDIT
+  // SAVE EDITED TASK
   const saveEdit = async () => {
     if (!editId) return;
 
     try {
       await axios.patch(`${baseURL}/tasks/${editId}`, {
         name: editName,
+        completed: editCompleted,
       });
 
       window.location.reload();
@@ -37,7 +45,7 @@ export default function App() {
     }
   };
 
-  //  OPEN DELETE MODAL
+  // 🔴 OPEN DELETE MODAL
   const openDeleteModal = (id, name) => {
     setDeleteId(id);
     setDeleteName(name);
@@ -58,7 +66,7 @@ export default function App() {
     <>
       <TaskList onEdit={openEditModal} onDelete={openDeleteModal} />
 
-      {/*  EDIT MODAL */}
+      {/* EDIT MODAL */}
       <div className="modal fade" id="editModal" tabIndex="-1">
         <div className="modal-dialog">
           <div className="modal-content">
@@ -69,12 +77,18 @@ export default function App() {
             </div>
 
             <div className="modal-body">
-              <label>Task Name:</label>
+              <label>Task Name</label>
               <input
-                type="text"
-                className="form-control"
+                className="form-control mb-3"
                 value={editName}
                 onChange={(e) => setEditName(e.target.value)}
+              />
+
+              <label style={{ marginRight: "10px" }}>Completed</label>
+              <input
+                type="checkbox"
+                checked={editCompleted}
+                onChange={(e) => setEditCompleted(e.target.checked)}
               />
             </div>
 
@@ -91,7 +105,7 @@ export default function App() {
         </div>
       </div>
 
-      {/*  DELETE MODAL */}
+      {/* DELETE MODAL */}
       <div className="modal fade" id="deleteModal" tabIndex="-1">
         <div className="modal-dialog">
           <div className="modal-content">
@@ -102,9 +116,9 @@ export default function App() {
             </div>
 
             <div className="modal-body">
-              Are you sure you want to delete:
+              Delete this task?
               <br />
-              <strong>{deleteName}</strong> ?
+              <strong>{deleteName}</strong>
             </div>
 
             <div className="modal-footer">
