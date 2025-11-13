@@ -1,10 +1,7 @@
 import React from "react";
 import axios from "axios";
 
-const baseURL =
-  import.meta.env?.VITE_API_URL ||
-  process.env.REACT_APP_API_URL ||
-  "https://task-manager-system-h48a.onrender.com/api/v1";
+const baseURL = process.env.REACT_APP_API_URL;
 
 export default function TaskItem({ task, refresh, onEdit, onDelete }) {
   const { _id, name, completed } = task;
@@ -29,19 +26,16 @@ export default function TaskItem({ task, refresh, onEdit, onDelete }) {
 
       <div className="task-links" style={{ display: "flex", gap: "10px", alignItems: "center" }}>
         
-        {/* Completed checkbox */}
         <input
           type="checkbox"
           checked={completed}
           onChange={toggleCompleted}
         />
 
-        {/* EDIT MODAL */}
         <button className="edit-link" onClick={() => onEdit(_id, name, completed)}>
           <i className="fas fa-edit"></i>
         </button>
 
-        {/* DELETE MODAL */}
         <button className="delete-btn" onClick={() => onDelete(_id, name)}>
           <i className="fas fa-trash"></i>
         </button>
