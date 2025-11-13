@@ -471,17 +471,3 @@ form > :last-child {
     opacity: 1;
   }
 }
-.task-actions {
-  display: flex;
-  align-items: center;
-  gap: 1rem; 
-}
-
-.completed-label {
-  display: flex;
-  align-items: center;
-  gap: 0.4rem; 
-  font-size: 0.9rem;
-  color: var(--grey-900);
-}
-

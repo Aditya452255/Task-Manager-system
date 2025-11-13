@@ -8,7 +8,7 @@ export default function EditTask({ id, back }) {
   const [taskCompleted, setTaskCompleted] = useState(false);
   const [alert, setAlert] = useState("");
 
-  // Load task details
+  // Load tasks
   const loadTask = async () => {
     try {
       const res = await axios.get(`${baseURL}/tasks/${id}`);
