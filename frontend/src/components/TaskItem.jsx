@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import axios from "axios";
 
 const baseURL =
@@ -8,65 +8,42 @@ const baseURL =
 
 export default function TaskItem({ task, refresh, onEdit }) {
   const { _id, name, completed } = task;
-  const [showModal, setShowModal] = useState(false);
 
-  const handleDelete = async () => {
-    try {
+  const openDeleteModal = () => {
+    // Put task name inside modal
+    document.getElementById("taskName").innerText = name;
+
+    const btn = document.getElementById("confirmDeleteBtn");
+    btn.onclick = async () => {
       await axios.delete(`${baseURL}/tasks/${_id}`);
-      setShowModal(false);
       refresh();
-    } catch (err) {
-      console.log(err);
-    }
+    };
+
+    // Trigger Bootstrap modal
+    const modal = new window.bootstrap.Modal(
+      document.getElementById("deleteModal")
+    );
+    modal.show();
   };
 
   return (
-    <>
-      {/* Single Task Box */}
-      <div className={`single-task ${completed ? "task-completed" : ""}`}>
-        <h5>
-          <span><i className="far fa-check-circle"></i></span>
-          {name}
-        </h5>
+    <div className={`single-task ${completed ? "task-completed" : ""}`}>
+      <h5>
+        <span>
+          <i className="far fa-check-circle"></i>
+        </span>
+        {name}
+      </h5>
 
-        <div className="task-links">
-          <button className="edit-link" onClick={() => onEdit(_id)}>
-            <i className="fas fa-edit"></i>
-          </button>
+      <div className="task-links">
+        <button className="edit-link" onClick={() => onEdit(_id)}>
+          <i className="fas fa-edit"></i>
+        </button>
 
-          <button className="delete-btn" onClick={() => setShowModal(true)}>
-            <i className="fas fa-trash"></i>
-          </button>
-        </div>
+        <button className="delete-btn" onClick={openDeleteModal}>
+          <i className="fas fa-trash"></i>
+        </button>
       </div>
-
-      {/* Modal */}
-      {showModal && (
-        <div className="modal fade show custom-modal-overlay">
-          <div className="modal-dialog custom-slide-down">
-            <div className="modal-content">
-              <div className="modal-header">
-                <h5 className="modal-title">Delete Task</h5>
-                <button className="btn-close" onClick={() => setShowModal(false)}></button>
-              </div>
-
-              <div className="modal-body">
-                <p>Are you sure you want to delete this task?</p>
-                <strong>{name}</strong>
-              </div>
-
-              <div className="modal-footer">
-                <button className="btn btn-secondary" onClick={() => setShowModal(false)}>
-                  Cancel
-                </button>
-                <button className="btn btn-danger" onClick={handleDelete}>
-                  Delete
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
-    </>
+    </div>
   );
 }
