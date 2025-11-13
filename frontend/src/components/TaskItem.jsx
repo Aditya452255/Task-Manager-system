@@ -1,7 +1,10 @@
 import React from "react";
 import axios from "axios";
 
-const baseURL = process.env.REACT_APP_API_URL;
+const baseURL =
+  import.meta.env?.VITE_API_URL ||
+  process.env.REACT_APP_API_URL ||
+  "https://task-manager-system-h48a.onrender.com/api/v1";
 
 export default function TaskItem({ task, refresh, onEdit, onDelete }) {
   const { _id, name, completed } = task;
@@ -20,17 +23,13 @@ export default function TaskItem({ task, refresh, onEdit, onDelete }) {
   return (
     <div className={`single-task ${completed ? "task-completed" : ""}`}>
       <h5>
-        <span>
-          <i className="far fa-check-circle"></i>
-        </span>
+        <span><i className="far fa-check-circle"></i></span>
         {name}
       </h5>
 
-      <div
-        className="task-links"
-        style={{ display: "flex", gap: "10px", alignItems: "center" }}
-      >
-        {/* Completed checkbox */}
+      <div className="task-links" style={{ display: "flex", gap: "10px", alignItems: "center" }}>
+
+        {/* Only checkbox */}
         <input
           type="checkbox"
           checked={completed}
@@ -38,12 +37,10 @@ export default function TaskItem({ task, refresh, onEdit, onDelete }) {
           style={{ width: "18px", height: "18px", cursor: "pointer" }}
         />
 
-        {/* Edit */}
         <button className="edit-link" onClick={() => onEdit(_id)}>
           <i className="fas fa-edit"></i>
         </button>
 
-        {/* Delete */}
         <button className="delete-btn" onClick={() => onDelete(_id, name)}>
           <i className="fas fa-trash"></i>
         </button>

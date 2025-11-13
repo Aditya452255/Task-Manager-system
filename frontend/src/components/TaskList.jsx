@@ -2,8 +2,10 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import TaskItem from "./TaskItem";
 
-const baseURL = process.env.REACT_APP_API_URL;
-
+const baseURL =
+  import.meta.env?.VITE_API_URL ||
+  process.env.REACT_APP_API_URL ||
+  "https://task-manager-system-h48a.onrender.com/api/v1";
 
 export default function TaskList({ onEdit, onDelete }) {
   const [tasks, setTasks] = useState([]);
@@ -28,13 +30,18 @@ export default function TaskList({ onEdit, onDelete }) {
 
   const createTask = async (e) => {
     e.preventDefault();
+    if (!taskName.trim()) {
+      setAlert("Please write something first");
+      return;
+    }
+
     try {
       await axios.post(`${baseURL}/tasks`, { name: taskName });
       setTaskName("");
-      setAlert("success, task added");
-      loadTasks();
+      setAlert("Task added!");
+      loadTasks(); // << important
     } catch {
-      setAlert("You have not written anything to add");
+      setAlert("Error adding task");
     }
 
     setTimeout(() => setAlert(""), 3000);
@@ -62,10 +69,7 @@ export default function TaskList({ onEdit, onDelete }) {
       </form>
 
       <section className="tasks-container">
-        <p
-          className="loading-text"
-          style={{ visibility: loading ? "visible" : "hidden" }}
-        >
+        <p className="loading-text" style={{ visibility: loading ? "visible" : "hidden" }}>
           Loading...
         </p>
 
