@@ -2,14 +2,15 @@ import React, { useState } from "react";
 import axios from "axios";
 
 const baseURL =
-  import.meta.env?.VITE_API_URL ||process.env.REACT_APP_API_URL ||"https://task-manager-system-h48a.onrender.com/api/v1";
+  import.meta.env?.VITE_API_URL ||
+  process.env.REACT_APP_API_URL ||
+  "https://task-manager-system-h48a.onrender.com/api/v1";
 
 export default function TaskItem({ task, refresh, onEdit }) {
   const { _id, name, completed } = task;
-
   const [showModal, setShowModal] = useState(false);
 
-  const confirmDelete = async () => {
+  const handleDelete = async () => {
     try {
       await axios.delete(`${baseURL}/tasks/${_id}`);
       setShowModal(false);
@@ -21,11 +22,10 @@ export default function TaskItem({ task, refresh, onEdit }) {
 
   return (
     <>
+      {/* Single Task Box */}
       <div className={`single-task ${completed ? "task-completed" : ""}`}>
         <h5>
-          <span>
-            <i className="far fa-check-circle"></i>
-          </span>
+          <span><i className="far fa-check-circle"></i></span>
           {name}
         </h5>
 
@@ -34,64 +34,38 @@ export default function TaskItem({ task, refresh, onEdit }) {
             <i className="fas fa-edit"></i>
           </button>
 
-        
           <button className="delete-btn" onClick={() => setShowModal(true)}>
             <i className="fas fa-trash"></i>
           </button>
         </div>
       </div>
 
-      {/* Bootstrap Modal */}
+      {/* Modal */}
       {showModal && (
-        <div
-          className="modal fade show"
-          style={{ display: "block" }}
-          tabIndex="-1"
-        >
-          <div className="modal-dialog">
+        <div className="modal fade show custom-modal-overlay">
+          <div className="modal-dialog custom-slide-down">
             <div className="modal-content">
-
               <div className="modal-header">
                 <h5 className="modal-title">Delete Task</h5>
-                <button
-                  type="button"
-                  className="btn-close"
-                  onClick={() => setShowModal(false)}
-                ></button>
+                <button className="btn-close" onClick={() => setShowModal(false)}></button>
               </div>
 
               <div className="modal-body">
-                <p>Are you sure you want to delete the following task?</p>
+                <p>Are you sure you want to delete this task?</p>
                 <strong>{name}</strong>
               </div>
 
               <div className="modal-footer">
-                <button
-                  type="button"
-                  className="btn btn-secondary"
-                  onClick={() => setShowModal(false)}
-                >
+                <button className="btn btn-secondary" onClick={() => setShowModal(false)}>
                   Cancel
                 </button>
-
-                <button
-                  type="button"
-                  className="btn btn-danger"
-                  onClick={confirmDelete}
-                >
+                <button className="btn btn-danger" onClick={handleDelete}>
                   Delete
                 </button>
               </div>
-
             </div>
           </div>
         </div>
-      )}
-      {showModal && (
-        <div
-          className="modal-backdrop fade show"
-          onClick={() => setShowModal(false)}
-        ></div>
       )}
     </>
   );

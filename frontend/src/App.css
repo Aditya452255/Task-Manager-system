@@ -444,3 +444,30 @@ form > :last-child {
   text-align: center;
   margin-top: 1rem;
 }
+/* dark background like real Bootstrap modal */
+.custom-modal-overlay {
+  display: block !important;
+  background: rgba(0, 0, 0, 0.6);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1050;
+}
+
+/* slide down animation */
+.custom-slide-down {
+  animation: slideDown 0.35s ease-out;
+}
+
+@keyframes slideDown {
+  from {
+    transform: translateY(-60px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0px);
+    opacity: 1;
+  }
+}
