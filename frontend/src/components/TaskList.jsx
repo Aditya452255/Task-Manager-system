@@ -3,10 +3,11 @@ import axios from "axios";
 import TaskItem from "./TaskItem";
 
 const baseURL =
-  import.meta.env?.VITE_API_URL || process.env.REACT_APP_API_URL || "https://task-manager-system-h48a.onrender.com/api/v1";
+  import.meta.env?.VITE_API_URL ||
+  process.env.REACT_APP_API_URL ||
+  "https://task-manager-system-h48a.onrender.com/api/v1";
 
-
-export default function TaskList({ onEdit }) {
+export default function TaskList({ onEdit, onDelete }) {
   const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(false);
   const [taskName, setTaskName] = useState("");
@@ -76,7 +77,13 @@ export default function TaskList({ onEdit }) {
           )}
 
           {tasks.map((task) => (
-            <TaskItem key={task._id} task={task} refresh={loadTasks} onEdit={onEdit} onDelete={onDelete} />
+            <TaskItem
+              key={task._id}
+              task={task}
+              refresh={loadTasks}
+              onEdit={onEdit}
+              onDelete={onDelete}
+            />
           ))}
         </div>
       </section>
